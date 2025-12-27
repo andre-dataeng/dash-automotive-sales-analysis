@@ -18,7 +18,7 @@ Proporcionar uma visão estratégica sobre o faturamento bruto, lucro líquido e
 - **Distribuição Regional:** Tabela das regioes que os carros estão
 
 ## 📸 Preview
-![Preview do Dashboard](dash_automotivo.png)
+![Preview do Dashboard](Img dash.png)
 
 ---
 *Desenvolvido por André - Engenheiro de Dados*
