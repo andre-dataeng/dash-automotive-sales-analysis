@@ -1,35 +1,47 @@
 import pandas as pd
 
-def process_automotive_data():
+def preparar_dados_concessionaria():
     """
-    Simulação de ETL para dados de concessionária.
-    Foco: Padronização de estados e cálculo de rentabilidade por veículo.
+    Foco: Saneamento e Padronização.
+    Os cálculos de KPIs (Lucro, Margem, Ticket Médio) 
+    são realizados via DAX no Power BI.
     """
-    # Exemplo de dados brutos
-    data = {
-        'Modelo': ['Civic', 'Corolla', 'Onix', 'HB20'],
-        'Marca': ['Honda', 'Toyota', 'Chevrolet', 'Hyundai'],
-        'Valor_Venda': [120000, 130000, 75000, 80000],
-        'Custo_Aquisicao': [95000, 105000, 60000, 62000],
-        'Estado': ['sp', 'rj', 'mg', 'SP'], # Estados com erro de padrão
-        'Status': ['Vendido', 'Vendido', 'Reservado', 'Disponível']
+    
+    # 1. CARGA DE DADOS BRUTOS (Simulando suas planilhas)
+    veiculos_raw = {
+        'VeiculoID': [1, 2, 4, 16],
+        'Marca': ['honda', 'Chevrolet', 'HYUNDAI', 'honda '], # Dados com erros de padronização
+        'Modelo': ['Civic', 'Cruze', 'HB20', 'Civic'],
+        'Status': ['Vendido', 'Disponível', 'Vendido', 'Disponível']
     }
     
-    df = pd.DataFrame(data)
-    print("--- Iniciando ETL Automotivo ---")
+    clientes_raw = {
+        'ClientID': [1, 2, 3],
+        'Estado': ['sp', 'RJ', 'mg'] # Estados em minúsculo
+    }
 
-    # 1. Padronização Geográfica (Engenharia de Dados)
-    df['Estado'] = df['Estado'].str.upper()
+    df_veiculos = pd.DataFrame(veiculos_raw)
+    df_clientes = pd.DataFrame(clientes_raw)
 
-    # 2. Cálculo de KPIs Financeiros
-    df['Lucro_Bruto'] = df['Valor_Venda'] - df['Custo_Aquisicao']
-    df['Margem_Percentual'] = (df['Lucro_Bruto'] / df['Valor_Venda']) * 100
+    print("--- Iniciando Saneamento de Dados para Power BI ---")
 
-    # 3. Filtro de Inventário Ativo (Lógica de Negócio)
-    estoque_disponivel = df[df['Status'] == 'Disponível']
+    # 2. TRANSFORMAÇÃO (Limpeza de strings e Normalização)
     
-    print(f"Processamento concluído. Veículos em estoque: {len(estoque_disponivel)}")
-    print(df[['Modelo', 'Estado', 'Lucro_Bruto', 'Margem_Percentual']])
+    # Padronizando Marcas para Maiúsculo e removendo espaços extras
+    df_veiculos['Marca'] = df_veiculos['Marca'].str.upper().str.strip()
+
+    # Padronizando Estados para Maiúsculo (Garante que o Mapa no BI funcione 100%)
+    df_clientes['Estado'] = df_clientes['Estado'].str.upper()
+
+    # Removendo possíveis duplicatas que podem inflar o Total de Vendas
+    df_veiculos = df_veiculos.drop_duplicates()
+
+    print("\n✅ Dados normalizados e prontos para o Power BI.")
+    print(df_veiculos[['VeiculoID', 'Marca', 'Status']].head())
+    print("\n✅ Estados padronizados:")
+    print(df_clientes['Estado'].unique())
+
+    return df_veiculos, df_clientes
 
 if __name__ == "__main__":
-    process_automotive_data()
+    preparar_dados_concessionaria()
