@@ -9,7 +9,20 @@ A arquitetura foi desenhada para suportar uma visão 360º da operação, utiliz
 - **Dimensão Veículos:** Atributos detalhados como Marca, Modelo, Ano, Combustível e Status (Vendido, Reservado, Disponível).
 - **Dimensão Clientes:** Perfil demográfico incluindo Estado e Idade para análise de público-alvo.
 
-## 🛠️ Tecnologias e Engenharia Aplicada
+## ⚙️ Arquitetura de Processamento (Data Pipeline)
+
+Neste projeto, optei por uma estrutura de camadas para garantir a integridade dos dados e a performance do dashboard:
+
+### 🐍 Camada de Saneamento (Python)
+O script `etl_automotive.py` não realiza cálculos financeiros; sua função é garantir a **Qualidade de Dados (Data Quality)** antes da carga:
+- **Normalização de Strings:** Padronização de Marcas e Modelos para evitar duplicidade por erro de digitação (ex: "honda" vs "Honda").
+- **Padronização Geográfica:** Conversão de estados para CAIXA ALTA, garantindo que a geolocalização do Power BI reconheça 100% dos dados no mapa.
+- **Deduplicação:** Remoção de registros duplicados que poderiam inflar o volume de vendas.
+
+### 📊 Camada de Inteligência (Power BI & DAX)
+Toda a lógica de negócio e cálculos matemáticos foram centralizados diretamente no Power BI através de **DAX (Data Analysis Expressions)**, permitindo que as métricas sejam dinâmicas:
+- **Medidas Calculadas:** Ticket Médio, Margem % e Lucro Total.
+- **Flexibilidade:** Os cálculos reagem instantaneamente aos filtros de Marca, Ano ou Status do Veículo.
 - **Power BI:** Modelagem de dados e criação de dashboards dinâmicos.
 - **DAX Avançado:** Desenvolvimento de medidas inteligentes para suporte à decisão:
   - `Ticket Médio`: Valor médio das transações por período.
