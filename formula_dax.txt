@@ -1,1 +1,76 @@
+Formulas usadas.
+
+Estados Clientes = 
+DISTINCTCOUNT(Clientes[Estado])
+
+O que faz: Conta quantos estados diferentes aparecem na sua base, sem repetir o mesmo estado.
+
+Utilidade: Saber em quantas regiões do Brasil você está atuando.
+------------------------------------------
+
+
+Carros Estoque = 
+CALCULATE(
+    COUNT(Veiculos[VeiculoID]),
+    Veiculos[Status] = "Disponível"
+)
+
+O que faz: Conta apenas os veículos onde o status é exatamente "Disponível".
+------------------------------------------
+
+Carros Vendidos = 
+CALCULATE(
+    COUNT(Veiculos[VeiculoID]),
+    Veiculos[Status] = "Vendido"
+)
+
+O que faz: Conta quantos veículos já saíram do estoque com o status "Vendido".
+------------------------------------------
+Modelos Diferentes = 
+DISTINCTCOUNT(Veiculos[Modelo])
+
+O que faz: Conta a variedade de modelos no seu catálogo (ex: Corolla, Civic, Onix) sem duplicatas.
+------------------------------------------
+
+Valor Estoque = 
+CALCULATE(
+    SUM(Veiculos[Preco]),
+    Veiculos[Status] = "Disponível"
+)
+
+O que faz: Soma o preço de venda de todos os carros que ainda estão no pátio.
+
+------------------------------------------
+
+Lucro Total = SUM(Vendas[Lucro])
+
+O que faz: Soma a diferença entre Venda e Custo (Lucro Bruto).
+------------------------------------------
+Margem % = 
+DIVIDE( SUM(Vendas[Lucro]), SUM(Vendas[ValorVenda]), 0 )
+
+O que faz: Divide o lucro pelo faturamento para saber a rentabilidade.
+------------------------------------------
+
+Qtd Vendida = COUNT(Vendas[VendaID])
+
+O que faz: Conta quantas linhas existem na tabela de vendas (cada linha é um negócio fechado).
+
+------------------------------------------
+Ticket Medio = AVERAGE(Vendas[ValorVenda])
+
+O que faz: Calcula o valor médio de cada venda realizada.
+
+------------------------------------------
+Total Custo = SUM(Vendas[Custo])
+
+O que faz: Soma quanto a empresa pagou por esses veículos.
+------------------------------------------
+Total Vendas = SUM(Vendas[ValorVenda])
+
+O que faz: Soma o faturamento bruto total.
+------------------------------------------
+
+
+------------------------------------------
 
